@@ -1,0 +1,17 @@
+# Use uma imagem base do Python
+FROM python:3.9
+
+# Define o diretório de trabalho dentro do contêiner
+WORKDIR /app
+
+# Copia o código-fonte do aplicativo Flask para o contêiner
+COPY . /app
+
+# Instala as dependências do aplicativo
+RUN pip install Flask psycopg2 flask-cors
+
+# Expõe a porta em que o aplicativo Flask irá escutar
+EXPOSE 5000
+
+# Comando para iniciar o aplicativo Flask quando o contêiner for iniciado
+CMD ["python", "main.py"]
