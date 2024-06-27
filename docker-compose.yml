@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: 'postgres:latest'
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: p4
+      POSTGRES_PASSWORD: p4
+      POSTGRES_DB: p4
+
+  backend:
+    build: .  # Build the image from the current directory (containing Dockerfile)
+    ports:
+      - "8501:8501"  # Map container port 8501 to host port 8501
+    volumes:
+      - .:/app  # Mount current directory as /app inside the container (optional)
+    environment:  # Optional environment variables for your Streamlit app
+      - DATABASE_URL=postgres://p4:p4@db:5432/p4
+    depends_on:
+      - db  # Ensure db service starts before backend service
+
+  api:
+    build: ./api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db  # Ensure db service starts before api service
